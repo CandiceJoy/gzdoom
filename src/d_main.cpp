@@ -33,6 +33,7 @@
 
 #if defined(__unix__) || defined(__APPLE__)
 #include <unistd.h>
+#include "database.h"
 #endif
 
 #include <math.h>
@@ -3512,6 +3513,8 @@ static int D_InitGame(const FIWADInfo* iwad_info, TArray<FString>& allwads, TArr
 		D_StartTitle ();				// start up intro loop
 		setmodeneeded = false;			// This may be set to true here, but isn't needed for a restart
 	}
+
+	database->init();
 	return 0;
 }
 //==========================================================================
@@ -3739,6 +3742,7 @@ int GameMain()
 
 void D_Cleanup()
 {
+	database->deinit();
 	if (demorecording)
 	{
 		G_CheckDemoStatus();
