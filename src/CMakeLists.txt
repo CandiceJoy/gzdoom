@@ -1179,7 +1179,7 @@ set (PCH_SOURCES
 if( ${HAVE_VM_JIT} )
 	set( PCH_SOURCES ${PCH_SOURCES} ${VM_JIT_SOURCES} )
 else()
-	set( NOT_COMPILED_SOURCE_FILES ${NOT_COMPILED_SOURCE_FILES} ${VM_JIT_SOURCES} database.h)
+	set( NOT_COMPILED_SOURCE_FILES ${NOT_COMPILED_SOURCE_FILES} ${VM_JIT_SOURCES} common/database/databasemanager.h common/database/database.cpp common/database/database.h)
 endif()
 
 if( MSVC )
@@ -1190,7 +1190,6 @@ else()
 endif()
 
 add_executable( zdoom WIN32 MACOSX_BUNDLE
-	database.cpp
 	${HEADER_FILES}
 	${NOT_COMPILED_SOURCE_FILES}
 	${SYSTEM_SOURCES}
@@ -1218,7 +1217,9 @@ add_executable( zdoom WIN32 MACOSX_BUNDLE
 	common/thirdparty/math/tan.c
 	common/thirdparty/math/tanh.c
 	common/thirdparty/math/fastsin.cpp
-)
+	common/database/databasemanager.cpp
+	common/database/database.cpp
+		)
 
 set_source_files_properties( ${FASTMATH_SOURCES} PROPERTIES COMPILE_FLAGS ${ZD_FASTMATH_FLAG} )
 set_source_files_properties( xlat/parse_xlat.cpp PROPERTIES OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xlat_parser.c" )
