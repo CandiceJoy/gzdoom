@@ -33,7 +33,6 @@
 
 #if defined(__unix__) || defined(__APPLE__)
 #include <unistd.h>
-#include "common/database/databasemanager.h"
 #endif
 
 #include <math.h>
@@ -118,6 +117,7 @@
 #include "screenjob.h"
 #include "startscreen.h"
 #include "shiftstate.h"
+#include "dbmanager.h"
 
 #ifdef __unix__
 #include "i_system.h"  // for SHARE_DIR
@@ -3515,8 +3515,7 @@ static int D_InitGame(const FIWADInfo* iwad_info, TArray<FString>& allwads, TArr
 	}
 
 	staticEventManager.OnEngineInitialize();
-	InitializeDatabaseManager();
-	databaseManager->Init();
+	InitializeDBManager();
 	return 0;
 }
 //==========================================================================
@@ -3744,7 +3743,6 @@ int GameMain()
 
 void D_Cleanup()
 {
-	databaseManager->Cleanup();
 	if (demorecording)
 	{
 		G_CheckDemoStatus();
