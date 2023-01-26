@@ -21,6 +21,10 @@ static char* compareTypeToString(CompareType type)
 			return "<";
 		case NOT_EQUAL:
 			return "!=";
+		case GREATER_THAN_OR_EQUAL:
+			return ">=";
+		case LESS_THAN_OR_EQUAL:
+			return "<=";
 	}
 }
 
@@ -28,7 +32,12 @@ class DatabaseManager
 {
 public:
 	DatabaseManager();
-	bool query(int mFileDef, char* sql, char **errmsg);
+	bool query(int mFileDef,char* sql, char **errmsg); // Used by VM
+
+	// WARNING: Internal use ONLY; no sanitisation!
+	// DO NOT EXPORT.  EVER.
+	bool sqlexec(char* sql, char **errmsg);
+
 	void cleanup();
 	bool wipeDatabases(DatabaseScope scope);
 	sqlite3 openDatabase(char* database);
@@ -39,9 +48,9 @@ public:
 	//Less aggressive sanitisation; just make sure they don't try to stray from their namespace
 	static char* sanitiseRawSql(char* sql);
 
-	//These are the only DatabaseManager functions that should ever be called from the VM
-	Database allocateDatabase(int mFileDef, DatabaseScope scope, char* databaseNamespace);
-	Database getDatabase(int mFileDef, DatabaseScope scope, char* databaseNamespace);
+	//These are the only DatabaseManager functions that should ONLY ever be called from the VM
+	void allocateDatabase(int mFileDef, DatabaseScope scope, char* databaseNamespace);
+	void getDatabase(int mFileDef, DatabaseScope scope, char* databaseNamespace);
 private:
 	TArray<Database> databases;
 	bool databasesAllowed;
